@@ -27,7 +27,7 @@ export type SimulationResult = {
   durationMs: number;
 };
 
-export type Quantity = "pressure" | "flow";
+export type Quantity = "pressure" | "flow" | "bcg";
 export type LineStyle = "solid" | "dashed" | "dotted";
 
 export type ComparisonTrace = {
@@ -53,4 +53,3 @@ export type WorkerResponse =
   | { id: string; type: "status"; message: string }
   | { id: string; type: "result"; result: Omit<SimulationResult, "runId" | "completedAt" | "durationMs">; durationMs: number }
   | { id: string; type: "error"; message: string };
-

@@ -46,11 +46,19 @@ export default function App() {
       hrBpm: result.controls.hr_bpm, svMl: result.controls.sv_mL,
       tprMultiplier: result.controls.tpr_multiplier, eMultiplier: result.controls.e_multiplier,
     };
-    const label = `${quantity === "pressure" ? "P" : "Q"} | ${result.segment.index} ${result.segment.name} | HR ${modelControls.hrBpm} bpm | SV ${modelControls.svMl} mL | TPR ${modelControls.tprMultiplier.toFixed(1)} | E ${modelControls.eMultiplier.toFixed(1)}`;
+    const quantityLabel = { pressure: "P", flow: "Q", bcg: "BCG" }[quantity];
+    const locationLabel = quantity === "bcg" ? "whole-body force" : `${result.segment.index} ${result.segment.name}`;
+    const time = quantity === "bcg" ? result.bcg_time_s : result.time_s;
+    const values = quantity === "pressure"
+      ? result.pressure_mmHg
+      : quantity === "flow"
+        ? result.flow_mL_s
+        : result.bcg_force_N;
+    const label = `${quantityLabel} | ${locationLabel} | HR ${modelControls.hrBpm} bpm | SV ${modelControls.svMl} mL | TPR ${modelControls.tprMultiplier.toFixed(1)} | E ${modelControls.eMultiplier.toFixed(1)}`;
     const trace: ComparisonTrace = Object.freeze({
       id, quantity,
-      time: Object.freeze([...result.time_s]),
-      values: Object.freeze([...(quantity === "pressure" ? result.pressure_mmHg : result.flow_mL_s)]),
+      time: Object.freeze([...time]),
+      values: Object.freeze([...values]),
       segment: Object.freeze({ ...result.segment }), controls: Object.freeze(modelControls), label,
       color: TRACE_COLORS[traces.length % TRACE_COLORS.length], lineStyle: "solid",
     });
@@ -99,4 +107,3 @@ export default function App() {
     </main>
   );
 }
-

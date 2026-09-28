@@ -4,7 +4,7 @@ import type { LineStyle, Quantity } from "../model/contracts";
 
 export type PlotTrace = {
   id: string;
-  quantity: Quantity | "bcg";
+  quantity: Quantity;
   time: readonly number[];
   values: readonly number[];
   color?: string;
@@ -81,4 +81,3 @@ export function WaveformPlot({ traces, title }: { traces: PlotTrace[]; title: st
     </div>
   );
 }
-
